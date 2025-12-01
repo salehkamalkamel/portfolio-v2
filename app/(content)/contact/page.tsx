@@ -68,7 +68,7 @@ export default function ContactPage() {
     {
       label: "WhatsApp",
       icon: MessageCircle,
-      href: "https://wa.me/1011966931",
+      href: "https://wa.me/+201011966931",
       color: "hover:text-green-400 hover:bg-green-900/20",
     },
     {
