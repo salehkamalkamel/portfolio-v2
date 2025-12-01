@@ -3,11 +3,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import Header from "@/components/header";
-import Breadcrumb from "@/components/breadcrumb";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { Suspense } from "react";
-import BreadcrumbSkeleton from "@/components/breadcrumb-skeleton";
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
@@ -44,9 +41,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`font-sans antialiased scroll-smooth`}>
         <Header />
-        <Suspense fallback={<BreadcrumbSkeleton />}>
-          <Breadcrumb />
-        </Suspense>
+
         {children}
         <Analytics />
         <Toaster />

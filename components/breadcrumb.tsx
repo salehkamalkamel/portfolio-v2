@@ -12,9 +12,6 @@ interface BreadcrumbItem {
 export default function Breadcrumb() {
   const pathname = usePathname();
 
-  if (pathname === "/" || pathname === "/signup" || pathname === "/login")
-    return null;
-
   const generateBreadcrumbs = (): BreadcrumbItem[] => {
     const paths = pathname.split("/").filter((path) => path);
     const breadcrumbs: BreadcrumbItem[] = [{ label: "Home", href: "/" }];
