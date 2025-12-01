@@ -37,7 +37,7 @@ export default async function ProjectsSection() {
                   <h3 className="text-xl font-bold mb-2 group-hover:text-cyan-400 transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-neutral-400 text-sm">
+                  <p className="text-neutral-400 text-base leading-relaxed mb-6 line-clamp-3">
                     {project.description}
                   </p>
                 </div>

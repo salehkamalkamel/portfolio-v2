@@ -41,7 +41,7 @@ export default function ClientProjectCard({
               {project.title}
             </h3>
 
-            <p className="text-neutral-400 text-base leading-relaxed mb-6">
+            <p className="text-neutral-400 text-base leading-relaxed mb-6 line-clamp-3">
               {project.description}
             </p>
           </div>
