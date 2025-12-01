@@ -3,7 +3,7 @@ import { getPosts } from "@/server/blog-actions";
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://yourdomain.com";
+  const baseUrl = "https://salehkamal.shop/";
 
   // 1. Fetch all blog posts
   const posts = await getPosts();
