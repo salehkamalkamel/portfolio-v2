@@ -211,8 +211,6 @@ export async function deleteComment(commentId: string, postId: string) {
     return { error: "Not allowed" };
   }
 
-  // Drizzle Cascade will handle children and likes if configured in DB,
-  // but explicitly deleting the comment is usually enough if FKs are set to CASCADE.
   await db.delete(comments).where(eq(comments.id, commentId));
 
   updateTag(`post-comments-${postId}`);

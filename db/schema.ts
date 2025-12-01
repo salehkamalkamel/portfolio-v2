@@ -221,7 +221,9 @@ export const comments = pgTable(
     content: text("content").notNull(),
     likesCount: integer("likes_count").default(0),
     // parent comment for threaded comments (optional may be null)
-    parentId: uuid("parent_id"),
+    parentId: uuid("parent_id").references((): any => comments.id, {
+      onDelete: "cascade",
+    }),
 
     // Relations
     userId: text("userId")
