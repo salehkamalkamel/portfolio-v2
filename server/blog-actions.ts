@@ -2,7 +2,7 @@
 
 import { comments, postLikes, posts } from "@/db/schema";
 import { eq, desc, sql, or, ilike } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { cacheTag, revalidatePath, updateTag } from "next/cache";
 import { slugify } from "@/lib/slugify";
 import { db } from "@/lib/drizzle";
 import { PostFormValues, postFormSchema } from "@/lib/validations/posts"; // ⬅️ Assume you define these
@@ -69,8 +69,7 @@ export async function createPost(data: PostFormValues) {
       .returning();
 
     // 3. Revalidate and Redirect
-    revalidatePath("/admin/blog");
-
+    updateTag("posts");
     return {
       success: true,
     };
@@ -92,6 +91,8 @@ export async function createPost(data: PostFormValues) {
  * Fetches all blog posts, typically for the admin listing page.
  */
 export async function getPosts(searchQuery?: string) {
+  "use cache";
+  cacheTag("posts");
   try {
     // Base query
     let query = db.select().from(posts);
@@ -130,6 +131,8 @@ export async function getPosts(searchQuery?: string) {
  * Fetches a single post by its UUID ID.
  */
 export async function getPostById(id: string) {
+  "use cache";
+  cacheTag(`post-${id}`);
   const [post] = await db.select().from(posts).where(eq(posts.id, id));
 
   return post;
@@ -139,6 +142,8 @@ export async function getPostById(id: string) {
  * Fetches a single post by its URL slug.
  */
 export async function getPostBySlug(slug: string) {
+  "use cache";
+  cacheTag(`post-${slug}`);
   const [post] = await db.select().from(posts).where(eq(posts.slug, slug));
 
   return post;
@@ -179,8 +184,9 @@ export async function updatePost(id: string, data: PostFormValues) {
 
     // 3. Revalidate paths
     // Invalidate the admin list page and the public post page
-    revalidatePath("/admin/blog");
-    revalidatePath(`/blog/${updatedPost.slug}`);
+    updateTag("posts");
+    updateTag(`post-${id}`);
+    updateTag("posts-with-counts");
 
     return { success: true, updated: updatedPost };
   } catch (error) {
@@ -204,11 +210,10 @@ export async function deletePost(id: string) {
       .returning({ slug: posts.slug }); // Return the slug to revalidate the public page
 
     // Revalidate paths
-    revalidatePath("/admin/blog");
-    // If the post was publicly available, clear its cache
-    if (deletedPost?.slug) {
-      revalidatePath(`/blog/${deletedPost.slug}`);
-    }
+    updateTag("posts");
+    updateTag(`post-${id}`);
+    updateTag(`post-${deletedPost.slug}`);
+    updateTag("posts-with-counts");
 
     return { success: true };
   } catch (error) {
@@ -221,6 +226,8 @@ export async function deletePost(id: string) {
 }
 
 export async function getPostsWithCounts() {
+  "use cache";
+  cacheTag("posts-with-counts");
   return await db.query.posts.findMany({
     orderBy: [desc(posts.createdAt)],
     extras: {

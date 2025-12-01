@@ -1,26 +1,14 @@
-import { getAuthors } from "@/server/authors-actions";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { getAuthorById } from "@/server/authors-actions";
 import EditAuthorForm from "@/components/author/edit-form";
 
-export async function generateStaticParams() {
-  const authors = await getAuthors();
-  return authors.map((author) => {
-    return {
-      id: author.id,
-    };
-  });
-}
-
 export default async function EditAuthorPage({
-  params,
+  authorId,
 }: {
-  params: Promise<{ id: string }>;
+  authorId: string;
 }) {
-  const authorId = (await params).id;
-
   const author = await getAuthorById(authorId);
 
   if (!author) {

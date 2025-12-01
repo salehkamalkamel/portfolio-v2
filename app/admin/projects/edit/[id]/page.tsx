@@ -1,5 +1,14 @@
 import EditForm from "@/components/projects/edit-form";
-import { getProjectById } from "@/server/projects-actions";
+import { getProjectById, getProjects } from "@/server/projects-actions";
+
+export async function generateStaticParams() {
+  const projects = await getProjects();
+  return projects.map((project) => {
+    return {
+      id: project.id,
+    };
+  });
+}
 
 export default async function EditProjectPage({
   params,

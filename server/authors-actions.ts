@@ -2,7 +2,7 @@
 
 import { authors } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { cacheTag, revalidatePath, updateTag } from "next/cache";
 import { slugify } from "@/lib/slugify";
 import { db } from "@/lib/drizzle";
 import { authorFormSchema, AuthorFormValues } from "@/lib/validations/authors";
@@ -49,9 +49,7 @@ export async function createAuthor(data: AuthorFormValues) {
       resourceLinks: resourceUrl ? [resourceUrl] : [],
     });
 
-    // 3. Revalidate and Redirect
-    // Clears the cache for the admin page so the new author appears immediately
-    revalidatePath("/admin/authors");
+    updateTag("authors");
   } catch (error) {
     console.error("Database Error:", error);
     return { error: "Failed to create author. Please try again." };
@@ -65,10 +63,14 @@ export async function createAuthor(data: AuthorFormValues) {
  ✅ READ
 ============================ */
 export async function getAuthors() {
+  "use cache";
+  cacheTag("authors");
   return await db.select().from(authors).orderBy(authors.createdAt);
 }
 
 export async function getAuthorById(id: string) {
+  "use cache";
+  cacheTag(`author-${id}`);
   const [author] = await db.select().from(authors).where(eq(authors.id, id));
 
   return author;
@@ -96,8 +98,7 @@ export async function updateAuthor(id: string, data: AuthorFormValues) {
       .where(eq(authors.id, id))
       .returning();
 
-    revalidatePath("/dashboard/authors");
-
+    updateTag("authors");
     return { success: true, updated };
   } catch (error: any) {
     return { success: false, message: error?.message };
@@ -111,8 +112,7 @@ export async function deleteAuthor(id: string) {
   try {
     await db.delete(authors).where(eq(authors.id, id));
 
-    revalidatePath("/dashboard/authors");
-
+    updateTag("authors");
     return { success: true };
   } catch (error: any) {
     return { success: false, message: error?.message };

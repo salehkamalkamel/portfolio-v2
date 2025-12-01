@@ -1,7 +1,16 @@
 import { notFound } from "next/navigation";
-import { getPostById } from "@/server/blog-actions";
+import { getPostById, getPosts } from "@/server/blog-actions";
 import { getAuthors } from "@/server/authors-actions";
 import EditBlogForm from "@/components/blog/edit-blog-form";
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.map((post) => {
+    return {
+      id: post.id,
+    };
+  });
+}
 
 export default async function EditBlogPage({
   params,

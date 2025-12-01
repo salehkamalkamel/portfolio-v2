@@ -4,7 +4,7 @@ import { randomUUID } from "crypto"; // ← Add this
 import { projects } from "@/db/schema";
 import { db } from "@/lib/drizzle";
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { cacheTag, revalidatePath, updateTag } from "next/cache";
 import { slugify } from "@/lib/slugify";
 import {
   projectFormSchema,
@@ -63,7 +63,10 @@ export async function createProject(data: ProjectFormValues) {
       })
       .returning();
 
-    revalidatePath("/admin/projects");
+    updateTag("projects");
+    {
+      data.featured && updateTag("featured-projects");
+    }
   } catch (error) {
     console.error("DB ERROR:", error);
     return { error: "Failed to create project." };
@@ -76,10 +79,14 @@ export async function createProject(data: ProjectFormValues) {
    ✅ READ — GET ALL PROJECTS
 ============================ */
 export async function getProjects() {
+  "use cache";
+  cacheTag("projects");
   return await db.select().from(projects).orderBy(projects.createdAt);
 }
 
 export async function getFeaturedProjects() {
+  "use cache";
+  cacheTag("featured-projects");
   return await db
     .select()
     .from(projects)
@@ -91,6 +98,8 @@ export async function getFeaturedProjects() {
    ✅ READ — GET PROJECT BY ID
 ============================ */
 export async function getProjectById(id: string) {
+  "use cache";
+  cacheTag(`projects-${id}`);
   const [project] = await db.select().from(projects).where(eq(projects.id, id));
 
   return project;
@@ -122,8 +131,12 @@ export async function updateProject(id: string, data: ProjectFormValues) {
       .where(eq(projects.id, id))
       .returning();
 
-    revalidatePath("/admin/projects");
-
+    updateTag("projects");
+    {
+      data.featured && updateTag("featured-projects");
+    }
+    updateTag(`projects-${id}`);
+    updateTag(`projects-${updateData.slug}`);
     return { success: true, updated };
   } catch (error: any) {
     console.error("UPDATE ERROR:", error);
@@ -136,10 +149,16 @@ export async function updateProject(id: string, data: ProjectFormValues) {
 ============================ */
 export async function deleteProject(id: string) {
   try {
-    await db.delete(projects).where(eq(projects.id, id));
+    const [deletedProject] = await db
+      .delete(projects)
+      .where(eq(projects.id, id))
+      .returning();
 
-    revalidatePath("/admin/projects");
+    updateTag("projects");
 
+    {
+      deletedProject?.featured && updateTag("featured-projects");
+    }
     return { success: true };
   } catch (error: any) {
     console.error("DELETE ERROR:", error);

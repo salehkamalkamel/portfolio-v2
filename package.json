@@ -82,6 +82,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "baseline-browser-mapping": "^2.8.32",
     "drizzle-kit": "^0.31.7",
     "postcss": "^8.5",
     "tailwindcss": "^4.1.9",

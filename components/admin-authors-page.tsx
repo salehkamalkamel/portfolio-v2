@@ -13,7 +13,7 @@ function getAvatarInitials(name: string) {
     names[names.length - 1].charAt(0).toUpperCase()
   );
 }
-export default async function Page() {
+export default async function AdminAuthorsPage() {
   const authors = await getAuthors();
 
   if (!authors) {
