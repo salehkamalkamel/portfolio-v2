@@ -29,7 +29,7 @@ export default async function ProjectsSection() {
           {projects.map((project, idx) => (
             <Link
               key={idx}
-              href={`/projects/${project.id}`}
+              href={`/projects/${project.slug}`}
               className="group border border-neutral-800/40 rounded-lg p-6 bg-neutral-800/20 hover:bg-neutral-800/40 transition-all hover:border-neutral-700/60"
             >
               <div className="flex justify-between items-start mb-4">

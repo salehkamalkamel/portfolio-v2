@@ -158,7 +158,7 @@ export default function CommentItem({
 
               {isOwner && (
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="opacity-0 group-hover:opacity-100 transition-opacity text-neutral-500 hover:text-white cursor-pointer">
+                  <DropdownMenuTrigger className="opacity-80 group-hover:opacity-100 transition-opacity text-neutral-500 hover:text-white cursor-pointer">
                     <MoreVertical className="w-4 h-4" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
