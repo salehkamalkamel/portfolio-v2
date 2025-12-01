@@ -116,9 +116,9 @@ export default function CommentItem({
 
   return (
     <div
-      className={`group ${isPending ? "opacity-60 pointer-events-none" : ""}`}
+      className={`group  ${isPending ? "opacity-60 pointer-events-none" : ""}`}
     >
-      <div className="flex gap-4">
+      <div className="flex gap-4 items-start max-sm:flex-col ">
         {/* Avatar Section */}
         <div className="shrink-0">
           <div className="w-10 h-10 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center overflow-hidden">
@@ -137,11 +137,11 @@ export default function CommentItem({
         </div>
 
         {/* Content Section */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 w-full">
           <div className="bg-neutral-900/50 border border-neutral-800/50 rounded-lg p-4">
             {/* Header */}
             <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="font-semibold text-neutral-200">
                   {comment.author.name}
                 </span>
@@ -213,7 +213,7 @@ export default function CommentItem({
                 </div>
               </form>
             ) : (
-              <p className="text-neutral-300 whitespace-pre-wrap text-sm leading-relaxed">
+              <p className="text-neutral-300 whitespace-pre-wrap wrap-break-word max-w-full text-sm leading-relaxed">
                 {comment.content}
               </p>
             )}
@@ -221,7 +221,7 @@ export default function CommentItem({
 
           {/* Action Bar */}
           {!isEditing && (
-            <div className="flex items-center gap-4 mt-2 pl-1">
+            <div className="flex flex-wrap items-center gap-4 mt-2 pl-1">
               <button
                 onClick={handleLike}
                 className={`flex items-center gap-1.5 text-xs font-medium transition-colors cursor-pointer ${
@@ -250,7 +250,7 @@ export default function CommentItem({
 
           {/* Reply Form */}
           {isReplying && currentUser && (
-            <div className="mt-4 pl-4 border-l-2 border-neutral-800">
+            <div className="mt-4 pl-3 sm:pl-4 border-l border-neutral-800">
               <CommentForm
                 postId={postId}
                 userId={currentUser.id}

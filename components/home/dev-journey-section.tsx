@@ -44,7 +44,7 @@ export default function DevJourneySection() {
             </p>
             <div className="flex flex-wrap gap-3 justify-center sm:justify-start w-full">
               <a
-                href="https://youtube.com/@devjourney"
+                href="https://youtube.com/@devjourney-e1y7e?si=-OCmJBsK4Ok0qioO"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors text-sm"
@@ -53,7 +53,7 @@ export default function DevJourneySection() {
                 Subscribe
               </a>
               <a
-                href="https://youtube.com/@devjourney"
+                href="https://youtube.com/@devjourney-e1y7e?si=-OCmJBsK4Ok0qioO"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-neutral-700 hover:border-neutral-600 text-neutral-300 hover:text-white rounded-lg font-medium transition-colors text-sm"

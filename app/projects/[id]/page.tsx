@@ -85,12 +85,12 @@ export default async function ProjectPage({
           )}
 
           {/* Optional Caption / Title overlay */}
-          <div className="absolute bottom-6 left-6 text-white">
+          {/* <div className="absolute bottom-6 left-6 text-white">
             <p className="text-sm text-neutral-300 mb-1 uppercase">
               {project.stack}
             </p>
             <h2 className="text-3xl font-bold">{project.title}</h2>
-          </div>
+          </div> */}
         </div>
       </section>
 

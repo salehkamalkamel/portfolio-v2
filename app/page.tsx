@@ -10,7 +10,7 @@ import ProjectsSectionSkeleton from "@/components/featured-projects-skeleton";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white ">
       {/* Hero Section - centered and symmetric */}
       <Hero />
 
@@ -52,7 +52,7 @@ export default function Home() {
                 <Linkedin className="w-5 h-5" />
               </a>
               <a
-                href="https://www.youtube.com/@DevJourney-e1y7e"
+                href="https://youtube.com/@devjourney-e1y7e?si=-OCmJBsK4Ok0qioO"
                 className="text-neutral-400 hover:text-white transition-colors"
               >
                 <Youtube className="w-5 h-5" />

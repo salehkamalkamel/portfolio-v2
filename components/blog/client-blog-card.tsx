@@ -59,7 +59,7 @@ export default async function ClientBlogCard({ post }: { post: Post }) {
         </span>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1">
-            <Heart className="w-4 h-4" />
+            <Heart className={`w-4 h-4 fill-current`} />
             <span>{postLikesCount || 0}</span>
           </div>
           {/* <div className="flex items-center gap-1">
