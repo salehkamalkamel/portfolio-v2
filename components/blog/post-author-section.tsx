@@ -1,6 +1,5 @@
 import { getAuthorById } from "@/server/authors-actions";
 import { ExternalLink } from "lucide-react";
-import Image from "next/image";
 
 export default async function PostAuthorSection({
   authorId,
@@ -9,7 +8,6 @@ export default async function PostAuthorSection({
 }) {
   const author = await getAuthorById(authorId);
   const initial = author.name?.charAt(0)?.toUpperCase();
-  console.log(author.imageUrl);
 
   return (
     <section className="max-w-4xl mx-auto py-6 w-full">
@@ -17,18 +15,11 @@ export default async function PostAuthorSection({
         <div className="flex items-start gap-4">
           {/* Smaller Avatar */}
           <div className="w-14 h-14 rounded-full bg-linear-to-br from-purple-500/20 to-purple-900/10 border border-purple-500/40 flex items-center justify-center overflow-hidden shrink-0">
-            {author.imageUrl ? (
-              <Image
-                fill
-                src={author.imageUrl}
-                alt={author.name}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <span className="text-lg font-semibold text-purple-400">
-                {initial}
-              </span>
-            )}
+            (
+            <span className="text-lg font-semibold text-purple-400">
+              {initial}
+            </span>
+            )
           </div>
 
           {/* Info Section */}
