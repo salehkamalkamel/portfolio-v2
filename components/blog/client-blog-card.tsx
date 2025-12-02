@@ -86,7 +86,8 @@ export default async function ClientBlogCard({ post }: { post: Post }) {
           <Heart
             className="
               w-4 h-4 
-              text-neutral-500 group-hover:text-red-400 
+              fill-current
+              text-neutral-500  
               transition-colors
             "
           />
