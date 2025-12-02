@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner"; // or your toast library
 import { addComment } from "@/server/comments-actions";
+import { useComments } from "./live-comments-section";
 
 interface CommentFormProps {
   postId: string;
@@ -29,6 +30,7 @@ export default function CommentForm({
 }: CommentFormProps) {
   const [content, setContent] = useState("");
   const [isPending, startTransition] = useTransition();
+  const { mutateComments } = useComments();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,7 +50,7 @@ export default function CommentForm({
         toast.success(parentId ? "Reply posted!" : "Comment posted!");
         onSuccess?.();
         // Refresh server components to show new comment
-        router.refresh();
+        mutateComments();
       } else {
         toast.error(result.error || "Failed to post comment");
       }

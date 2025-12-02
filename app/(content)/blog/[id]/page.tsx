@@ -1,6 +1,6 @@
 // app/blog/[slug]/page.tsx
 
-import { Calendar } from "lucide-react";
+import { Calendar, MessageCircleDashed } from "lucide-react";
 import { getPostById, getPosts } from "@/server/blog-actions";
 
 import BlogPostContent from "@/components/blog/blog-content";
@@ -15,6 +15,7 @@ import { CommentsWrapper } from "@/components/blog/comments-wrapper";
 import CommentsSkeleton from "@/components/blog/comments-skeleton";
 import PostAuthorSection from "@/components/blog/post-author-section";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export async function generateStaticParams() {
   const blogs = await getPosts();
@@ -110,6 +111,13 @@ export default async function BlogPostPage({
             >
               <PostLikeWrapper postId={post.id} />
             </Suspense>
+            <Link
+              href={"#comments"}
+              className="cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg border bg-neutral-800/20 border-neutral-800/40 text-neutral-400 hover:bg-neutral-800/40 transition-all disabled:opacity-50"
+            >
+              <MessageCircleDashed className="w-5 h-5" />
+              Comments
+            </Link>
             <ShareButton title={post.title} />
           </div>
         </article>
