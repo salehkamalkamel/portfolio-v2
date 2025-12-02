@@ -36,7 +36,7 @@ export default function EditAuthorForm({ author }: { author: Author }) {
       role: author.role,
       bio: author.bio ?? undefined,
       resourceLabel: author.resourceLabel ?? undefined,
-      avatar: author.imageUrl ?? undefined,
+      imageUrl: author.imageUrl ?? undefined,
       resourceUrl: author.resourceLinks ? author.resourceLinks[0] : undefined,
     },
   });
@@ -100,20 +100,19 @@ export default function EditAuthorForm({ author }: { author: Author }) {
         {/* Avatar */}
         <Controller
           disabled={isPending}
-          name="avatar"
+          name="imageUrl"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel className="text-white">Avatar Initials</FieldLabel>
               <Input
                 {...field}
-                maxLength={2}
                 onChange={(e) => field.onChange(e.target.value.toUpperCase())}
                 className="bg-neutral-800/50 border-neutral-700/50 text-white placeholder-neutral-500 focus:border-purple-500"
                 placeholder="e.g., SK"
               />
               <FieldDescription className="text-neutral-500">
-                Two letter initials for avatar
+                Author Image URL{" "}
               </FieldDescription>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>

@@ -8,7 +8,7 @@ export const authorFormSchema = z.object({
   role: z.string().max(128).default("Author"),
   bio: z.string().max(500, "Bio cannot exceed 500 characters").optional(),
   // We will map this to 'imageUrl' in the DB
-  avatar: z.string().max(2).optional(),
+  imageUrl: z.string().optional(),
   resourceLabel: z.string().max(128).optional(),
   // We will map this to 'resourceLinks' array in the DB
   resourceUrl: z.string().url("Invalid URL").optional().or(z.literal("")),

@@ -33,7 +33,7 @@ export default function AddAuthorPage() {
       name: "",
       role: "",
       bio: "",
-      avatar: "",
+      imageUrl: "",
       resourceLabel: "",
       resourceUrl: "",
     },
@@ -108,16 +108,15 @@ export default function AddAuthorPage() {
               {/* Avatar */}
               <Controller
                 disabled={isPending}
-                name="avatar"
+                name="imageUrl"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel className="text-white">
-                      Avatar Initials (optional)
+                      Image URL (optional)
                     </FieldLabel>
                     <Input
                       {...field}
-                      maxLength={2}
                       onChange={(e) =>
                         field.onChange(e.target.value.toUpperCase())
                       }
@@ -125,7 +124,7 @@ export default function AddAuthorPage() {
                       placeholder="Auto-generated from name if empty"
                     />
                     <FieldDescription className="text-neutral-500">
-                      Leave empty to auto-generate from name
+                      Add Image URL{" "}
                     </FieldDescription>
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />

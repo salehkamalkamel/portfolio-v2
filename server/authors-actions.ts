@@ -21,18 +21,8 @@ export async function createAuthor(data: AuthorFormValues) {
     return { error: "Invalid form data" };
   }
 
-  const { name, role, bio, avatar, resourceLabel, resourceUrl } = parsed.data;
+  const { name, role, bio, imageUrl, resourceLabel, resourceUrl } = parsed.data;
 
-  // 2. Prepare data for Drizzle
-  // Logic to handle avatar generation if the user didn't type initials
-  const finalAvatar =
-    avatar ||
-    name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-      .substring(0, 2);
   const id = randomUUID();
   const slug = slugify(name, id);
 
@@ -43,7 +33,7 @@ export async function createAuthor(data: AuthorFormValues) {
       role,
       bio,
       slug,
-      imageUrl: finalAvatar, // Storing initials in image_url as per your logic
+      imageUrl,
       resourceLabel,
       // Convert single URL to array for JSONB column
       resourceLinks: resourceUrl ? [resourceUrl] : [],
