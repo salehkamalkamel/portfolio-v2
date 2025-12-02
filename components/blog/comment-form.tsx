@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner"; // or your toast library
 import { addComment } from "@/server/comments-actions";
@@ -31,7 +30,6 @@ export default function CommentForm({
   const [content, setContent] = useState("");
   const [isPending, startTransition] = useTransition();
   const { mutateComments } = useComments();
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +47,6 @@ export default function CommentForm({
         setContent("");
         toast.success(parentId ? "Reply posted!" : "Comment posted!");
         onSuccess?.();
-        // Refresh server components to show new comment
         mutateComments();
       } else {
         toast.error(result.error || "Failed to post comment");

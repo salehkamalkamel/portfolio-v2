@@ -25,7 +25,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
+import { useComments } from "./live-comments-section";
 
 interface CommentItemProps {
   comment: CommentWithAuthor;
@@ -40,11 +40,11 @@ export default function CommentItem({
   currentUser,
   depth,
 }: CommentItemProps) {
-  const router = useRouter();
   const [isReplying, setIsReplying] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const { mutateComments } = useComments();
 
   // Optimistic State
   const [isLiked, setIsLiked] = useState(comment.isLikedByUser);
@@ -76,6 +76,8 @@ export default function CommentItem({
         setIsLiked(previousLiked);
         setLikesCount(previousCount);
         toast.error(result.error || "Failed to like comment");
+      } else {
+        mutateComments();
       }
     });
   };
@@ -86,6 +88,7 @@ export default function CommentItem({
     startTransition(async () => {
       const result = await deleteComment(comment.id, postId);
       if (result.success) {
+        mutateComments();
         toast.success("Comment deleted");
       } else {
         toast.error(result.error || "Failed to delete comment");
@@ -104,6 +107,7 @@ export default function CommentItem({
         postId
       );
       if (result.success) {
+        mutateComments();
         toast.success("Comment updated!");
         setIsEditing(false);
       } else {
