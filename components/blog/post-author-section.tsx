@@ -1,5 +1,6 @@
 import { getAuthorById } from "@/server/authors-actions";
 import { ExternalLink } from "lucide-react";
+import Image from "next/image";
 
 export default async function PostAuthorSection({
   authorId,
@@ -17,7 +18,8 @@ export default async function PostAuthorSection({
           {/* Smaller Avatar */}
           <div className="w-14 h-14 rounded-full bg-linear-to-br from-purple-500/20 to-purple-900/10 border border-purple-500/40 flex items-center justify-center overflow-hidden shrink-0">
             {author.imageUrl ? (
-              <img
+              <Image
+                fill
                 src={author.imageUrl}
                 alt={author.name}
                 className="w-full h-full object-cover"
