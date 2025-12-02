@@ -1,8 +1,9 @@
+// app/blog/[slug]/page.tsx
+
 import { Calendar } from "lucide-react";
 import { getPostById, getPosts } from "@/server/blog-actions";
 
 import BlogPostContent from "@/components/blog/blog-content";
-
 import { AIFeaturesPanel } from "@/components/ai-features-panel";
 import ShareButton from "@/components/blog/share-button";
 import { Suspense } from "react";
@@ -12,16 +13,14 @@ import { notFound } from "next/navigation";
 import { PostLikeWrapper } from "@/components/blog/post-like-wrapper";
 import { CommentsWrapper } from "@/components/blog/comments-wrapper";
 import CommentsSkeleton from "@/components/blog/comments-skeleton";
-// app/blog/[slug]/page.tsx
+import PostAuthorSection from "@/components/blog/post-author-section";
 import { Metadata } from "next";
 
 export async function generateStaticParams() {
   const blogs = await getPosts();
-  return blogs.map((post) => {
-    return {
-      id: post.slug,
-    };
-  });
+  return blogs.map((post) => ({
+    id: post.slug,
+  }));
 }
 
 export async function generateMetadata({
@@ -37,9 +36,7 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: post.seoDescription,
-    alternates: {
-      canonical: `/blog/${id}`,
-    },
+    alternates: { canonical: `/blog/${id}` },
     openGraph: {
       title: post.title,
       description: post?.seoDescription || post.title,
@@ -63,45 +60,49 @@ export default async function BlogPostPage({
   const { id } = await params;
   const postId = id?.split("__")[1];
   const post = await getPostById(postId);
+
   if (!post) return notFound();
 
   return (
     <>
+      {/* User Profile Top Bar */}
       <Suspense fallback={<BlogUserProfileSkeleton />}>
         <BlogUserProfile postId={post.id} />
       </Suspense>
+
       <div className="min-h-screen bg-black text-white">
-        {/* Post Header */}
-        <article className="max-w-4xl mx-auto px-6 py-16 border-b border-neutral-800/40">
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="px-3 py-1 bg-cyan-900/30 text-cyan-300 border border-cyan-700/50 rounded text-xs font-medium">
-                {post.category}
-              </span>
-              <span className="flex items-center gap-2 text-sm text-neutral-500">
-                <Calendar className="w-4 h-4" />
-                {new Date(post.createdAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </span>
-              <span className="text-sm text-neutral-500">
-                {post.readTime} min read
-              </span>
-            </div>
+        {/* Header */}
+        <article className="max-w-4xl mx-auto px-6 py-8 border-b border-neutral-800/40">
+          {/* Category + Meta */}
+          <div className="flex items-center flex-wrap gap-3 mb-4">
+            <span className="px-3 py-1 bg-cyan-900/20 text-cyan-300 border border-cyan-700/40 rounded text-xs font-medium">
+              {post.category}
+            </span>
 
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
-              {post.title}
-            </h1>
+            <span className="flex items-center gap-2 text-sm text-neutral-500">
+              <Calendar className="w-4 h-4" />
+              {new Date(post.createdAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
 
-            <p className="text-neutral-400 text-lg leading-relaxed">
-              {post.excerpt}
-            </p>
+            <span className="text-sm text-neutral-500">
+              {post.readTime} min read
+            </span>
           </div>
 
-          {/* Post Meta */}
-          <div className="border-t border-neutral-800/40 pt-6 flex items-center gap-6">
+          {/* Title */}
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight mb-4">
+            {post.title}
+          </h1>
+
+          {/* Slim Author Row */}
+          <PostAuthorSection authorId={post.authorId} />
+
+          {/* Action Row */}
+          <div className="border-t border-neutral-800/40 pt-4 mt-6 flex items-center gap-4">
             <Suspense
               fallback={
                 <div className="h-10 w-24 bg-neutral-800 rounded animate-pulse" />
@@ -109,32 +110,30 @@ export default async function BlogPostPage({
             >
               <PostLikeWrapper postId={post.id} />
             </Suspense>
-
             <ShareButton title={post.title} />
           </div>
         </article>
 
-        <section className="max-w-4xl mx-auto px-6 py-8">
+        {/* AI Enhancement Panel */}
+        <section className="max-w-4xl mx-auto px-6 py-6">
           <AIFeaturesPanel title={post.title} content={post.content} />
         </section>
 
-        {/* Post Content */}
+        {/* Blog Content */}
         <BlogPostContent content={post.content} />
 
-        {/* Comments Section */}
+        {/* Comments */}
         <Suspense fallback={<CommentsSkeleton />}>
           <CommentsWrapper postId={post.id} />
         </Suspense>
 
         {/* Footer */}
-        <footer className="border-t border-neutral-800/40 bg-neutral-900/30 mt-16">
-          <div className="max-w-6xl mx-auto px-6 py-12">
-            <div className="text-center text-neutral-500 text-sm">
-              <p>
-                © 2025 Saleh Kamal. Built with Next.js and optimized for
-                performance.
-              </p>
-            </div>
+        <footer className="border-t border-neutral-800/40 bg-neutral-900/30 mt-10">
+          <div className="max-w-6xl mx-auto px-6 py-8">
+            <p className="text-center text-neutral-500 text-sm">
+              © 2025 Saleh Kamal. Built with Next.js and optimized for
+              performance.
+            </p>
           </div>
         </footer>
       </div>

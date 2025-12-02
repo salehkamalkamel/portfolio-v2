@@ -22,14 +22,14 @@ export async function CommentsWrapper({ postId }: { postId: string }) {
           <p className="text-cyan-300 text-center">
             Please{" "}
             <Link
-              href="/sign-in"
+              href="/login"
               className="underline font-medium hover:text-cyan-200"
             >
               sign in
             </Link>{" "}
             or{" "}
             <Link
-              href="/sign-up"
+              href="/signup"
               className="underline font-medium hover:text-cyan-200"
             >
               create an account
