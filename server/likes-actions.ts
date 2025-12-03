@@ -4,7 +4,7 @@ import { db } from "@/lib/drizzle";
 import { postLikes, posts } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { sql } from "drizzle-orm";
-import { cacheTag, updateTag } from "next/cache";
+import { cacheTag, revalidatePath, updateTag } from "next/cache";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
@@ -63,6 +63,7 @@ export async function togglePostLike(postId: string) {
       totalLikes: Number(countRow?.count ?? 0),
     };
   } catch (error) {
+    revalidatePath(`/blog/${postId}`);
     console.error("Error toggling post like:", error);
     return { success: false, error: "Failed to toggle like" };
   }
