@@ -142,22 +142,16 @@ export type Project = typeof projects.$inferSelect;
 /**
  * -----------------------------------------------------------
  * AUTHORS TABLE
- * Stores information about the content creators.
  * -----------------------------------------------------------
  */
 export const authors = pgTable("authors", {
   id: uuid("id").defaultRandom().primaryKey(),
-  // A publicly visible name (e.g., "Jane Doe")
   name: varchar("name", { length: 256 }).notNull(),
-  // A unique, URL-friendly identifier for the author (e.g., "jane-doe")
   slug: varchar("slug", { length: 128 }).unique().notNull(),
   role: varchar("role", { length: 128 }).notNull().default("Author"),
-  // Optional: A short bio or description of the author
   bio: text("bio"),
-  // Optional: Profile picture URL (Placeholder for actual asset storage)
   imageUrl: varchar("image_url", { length: 256 }),
-  // The email is stored here to uniquely identify and link the author.
-  // This would typically be linked back to a separate identity/user management system.
+
   resourceLinks: jsonb("resource_links").$type<string[]>().default([]),
   resourceLabel: varchar("resource_label", { length: 128 }),
   createdAt: timestamp("created_at")
@@ -220,7 +214,6 @@ export const comments = pgTable(
     id: uuid("id").defaultRandom().primaryKey(),
     content: text("content").notNull(),
     likesCount: integer("likes_count").default(0),
-    // parent comment for threaded comments (optional may be null)
     parentId: uuid("parent_id").references((): any => comments.id, {
       onDelete: "cascade",
     }),

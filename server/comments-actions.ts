@@ -131,7 +131,6 @@ export async function toggleCommentLike(commentId: string, postId: string) {
       .onConflictDoNothing()
       .returning();
 
-    // If inserted.length > 0 → LIKE
     if (inserted.length > 0) {
       await db
         .update(comments)

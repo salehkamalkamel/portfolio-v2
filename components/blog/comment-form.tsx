@@ -47,7 +47,7 @@ export default function CommentForm({
         setContent("");
         toast.success(parentId ? "Reply posted!" : "Comment posted!");
         onSuccess?.();
-        mutateComments();
+        await mutateComments();
       } else {
         toast.error(result.error || "Failed to post comment");
       }

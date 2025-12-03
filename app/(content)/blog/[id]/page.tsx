@@ -1,5 +1,3 @@
-// app/blog/[slug]/page.tsx
-
 import { Calendar, MessageCircle } from "lucide-react";
 import { getPostById, getPosts } from "@/server/blog-actions";
 

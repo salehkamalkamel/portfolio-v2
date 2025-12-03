@@ -9,7 +9,6 @@ export async function CommentsWrapper({ postId }: { postId: string }) {
   const session = await auth.api.getSession({ headers: await headers() });
   const user = session?.user || null;
 
-  // Fetch Initial Data (Server Side)
   const comments = await getCommentsForPost(postId, user?.id);
 
   return (

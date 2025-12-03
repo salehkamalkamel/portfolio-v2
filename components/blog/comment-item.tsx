@@ -47,8 +47,8 @@ export default function CommentItem({
   const { mutateComments } = useComments();
 
   // Optimistic State
-  const [isLiked, setIsLiked] = useState(comment.isLikedByUser);
-  const [likesCount, setLikesCount] = useState(comment.likesCount || 0);
+  // const [isLiked, setIsLiked] = useState(comment.isLikedByUser);
+  // const [likesCount, setLikesCount] = useState(comment.likesCount || 0);
   const [editedContent, setEditedContent] = useState(comment.content);
 
   const isOwner = currentUser?.id === comment.userId;
@@ -61,23 +61,22 @@ export default function CommentItem({
       return;
     }
 
-    const previousLiked = isLiked;
-    const previousCount = likesCount;
+    // const previousLiked = isLiked;
+    // const previousCount = likesCount;
 
     // Optimistic Update
-    setIsLiked(!isLiked);
-    setLikesCount((prev) => (isLiked ? prev - 1 : prev + 1));
+    // setIsLiked(!isLiked);
+    // setLikesCount((prev) => (isLiked ? prev - 1 : prev + 1));
 
     startTransition(async () => {
       const result = await toggleCommentLike(comment.id, postId);
-      console.log(result);
-      if (!result.success) {
-        // Revert on failure
-        setIsLiked(previousLiked);
-        setLikesCount(previousCount);
-        toast.error(result.error || "Failed to like comment");
+      if (result.success) {
+        await mutateComments();
       } else {
-        mutateComments();
+        // Revert on failure
+        // setIsLiked(previousLiked);
+        // setLikesCount(previousCount);
+        toast.error(result.error || "Failed to like comment");
       }
     });
   };
@@ -88,7 +87,7 @@ export default function CommentItem({
     startTransition(async () => {
       const result = await deleteComment(comment.id, postId);
       if (result.success) {
-        mutateComments();
+        await mutateComments();
         toast.success("Comment deleted");
       } else {
         toast.error(result.error || "Failed to delete comment");
@@ -229,15 +228,19 @@ export default function CommentItem({
               <button
                 onClick={handleLike}
                 className={`flex items-center gap-1.5 text-xs font-medium transition-colors cursor-pointer ${
-                  isLiked
+                  comment.isLikedByUser
                     ? "text-red-400"
                     : "text-neutral-500 hover:text-neutral-300"
                 }`}
               >
                 <Heart
-                  className={`w-3.5 h-3.5 ${isLiked ? "fill-current" : ""}`}
+                  className={`w-3.5 h-3.5 ${
+                    comment.isLikedByUser ? "fill-current" : ""
+                  }`}
                 />
-                {likesCount > 0 && <span>{likesCount}</span>}
+                {(comment.likesCount ?? 0) > 0 && (
+                  <span>{comment.likesCount ?? 0}</span>
+                )}
               </button>
 
               {currentUser && depth < MAX_DEPTH && (
