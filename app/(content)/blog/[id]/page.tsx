@@ -109,13 +109,13 @@ export default async function BlogPostPage({
             >
               <PostLikeWrapper postId={post.id} />
             </Suspense>
-            <Link
+            <a
               href={"#comments"}
               className="cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg border bg-neutral-800/20 border-neutral-800/40 text-neutral-400 hover:bg-neutral-800/40 transition-all disabled:opacity-50"
             >
               <MessageCircle className="w-5 h-5" />
               Comments
-            </Link>
+            </a>
             <ShareButton title={post.title} />
           </div>
         </article>
