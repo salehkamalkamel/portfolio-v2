@@ -1,3 +1,4 @@
+"use client";
 import { CommentWithAuthor } from "@/server/comments-actions";
 import CommentItem from "./comment-item";
 
@@ -14,7 +15,6 @@ export default function CommentList({
   currentUser,
   depth = 0,
 }: CommentListProps) {
-  // Sort by created date locally if needed, though server usually handles this
   return (
     <div
       className={
