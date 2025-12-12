@@ -13,7 +13,6 @@ import { CommentsWrapper } from "@/components/blog/comments-wrapper";
 import CommentsSkeleton from "@/components/blog/comments-skeleton";
 import PostAuthorSection from "@/components/blog/post-author-section";
 import { Metadata } from "next";
-import Link from "next/link";
 
 export async function generateStaticParams() {
   const blogs = await getPosts();
