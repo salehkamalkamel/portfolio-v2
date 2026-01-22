@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/admin/", // Hide admin or private routes
     },
-    sitemap: "https://salehkamal.shop//sitemap.xml",
+    sitemap: "https://saleh-kamal.blog//sitemap.xml",
   };
 }
