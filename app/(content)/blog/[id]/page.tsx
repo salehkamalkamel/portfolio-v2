@@ -61,8 +61,38 @@ export default async function BlogPostPage({
 
   if (!post) return notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.seoDescription || post.title,
+    image: post.coverImageUrl ? [post.coverImageUrl] : [],
+    datePublished: new Date(post.createdAt).toISOString(),
+    dateModified: new Date(post.updatedAt ?? post.createdAt).toISOString(),
+    author: {
+      "@type": "Person",
+      name: "Saleh Kamal",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Saleh Kamal",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://saleh-kamal.blog/logo.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://saleh-kamal.blog/blog/${id}`,
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* User Profile Top Bar */}
       <Suspense fallback={<BlogUserProfileSkeleton />}>
         <BlogUserProfile postId={post.id} />
